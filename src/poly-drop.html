@@ -1,0 +1,100 @@
+<!-- Import Polymer -->
+<link rel="import" href="../bower_components/polymer/polymer.html">
+
+<!-- Define <poly-drop> -->
+<polymer-element name="poly-drop">
+	<script src="upload.js"></script>
+	<style>
+		#dropzone {
+			border: 2px dashed #bbb;
+			-moz-border-radius: 5px;
+			-webkit-border-radius: 5px;
+			border-radius: 5px;
+			padding: 25px;
+			text-align: center;
+			font: 20pt bold 'Helvetica';
+			color: #bbb;
+		}
+	</style>
+	<template>
+		<span id="signin"></span>
+		<div id="dropzone" style="display:none;">Drop files here</div>
+		<div id="results"></div>
+	</template>
+	<script>
+	    var clientId = "400542164111-q94vcbin3jp3fb2a0su1nm6gt4qpf86t.apps.googleusercontent.com";
+		
+		var accessToken = null;
+
+		function signinCallback(result) {
+		    if (result.access_token) {
+		        accessToken = result.access_token;
+		        document.getElementById("signin").style.display = "none";
+		        document.getElementById("dropzone").style.display = null;
+		    }
+		}
+
+		Polymer('poly-drop', {
+		/*
+		    signinCallback: function (result) {
+		        this.accessToken = result.access_token;
+		        this.$.signin.style.display = "none";
+		        this.$.dropzone.style.display = null;
+		    },*/
+		    created: function () {
+		        var script = document.createElement("script");
+		        var body = document.body;
+		        var div = document.createElement("div");
+
+		        script.setAttribute("type", "text/javascript");
+		        script.setAttribute("src", "https://apis.google.com/js/client:plusone.js");
+		        script.setAttribute("async", true);
+		        script.innerHTML = "{lang: 'en-us'}";
+
+		        div.setAttribute("class", "g-signin");
+		        div.setAttribute("data-callback", "signinCallback");
+		        div.setAttribute("data-clientid", clientId);
+		        div.setAttribute("data-cookiepolicy", "single_host_origin");
+		        div.setAttribute("data-scope", "https://www.googleapis.com/auth/drive.file");
+		        body.appendChild(div);
+		        body.appendChild(script);
+
+		    },
+		    ready: function () {
+		        this.results = this.$.results;
+		        this.dropzone = this.$.dropzone;
+		        this.dropzone.addEventListener('dragover', this.handleDragOver, false);
+		        this.dropzone.addEventListener('drop', this.handleFileSelect, false);
+		    },
+		    handleDragOver: function (evt) {
+		        evt.stopPropagation();
+		        evt.preventDefault();
+		        evt.dataTransfer.dropEffect = 'copy';
+		    },
+		    handleFileSelect: function (evt) {
+		        evt.stopPropagation();
+		        evt.preventDefault();
+
+		        var files = evt.dataTransfer.files; // FileList object.
+		        console.log(files); // name, size, type
+
+		        var output = [];
+		        for (var i = 0, f; f = files[i]; i++) {
+		            var uploader = new MediaUploader({
+		                file: f,
+		                token: accessToken,
+		                onComplete: function (data) {
+
+		                    var element = document.createElement("pre");
+		                    element.appendChild(document.createTextNode(data));
+		                    this.results.appendChild(element);
+
+		                    console.log(data);
+		                }
+		            });
+		            uploader.upload();
+		        }           
+		    }
+		});
+	</script>
+</polymer-element>

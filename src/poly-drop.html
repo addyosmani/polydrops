@@ -44,6 +44,13 @@
 		  background: -webkit-linear-gradient(top, #e3e3e3, #f9f9f9);
 		}
 
+		ul { padding-left: 0px; }
+		ul li {
+			background: #F5F5F5;
+			padding: 10px 10px;
+			border: 1px solid #ccc
+		}
+
 		#uploadView { display: none; }
 	</style>
 	<template>
@@ -67,7 +74,7 @@
 			<h2>Successfully uploaded</h2>
 			<ul>
 				<template repeat="{{uploadedList}}">
-					<li><img src="{{iconLink}}"/> <strong>{{title}}</strong> <a href="{{selfLink}}">Link to file</a>, <a href="{{webContentLink}}">Link to web content</a>, {{thumbnailLink}}</li>
+					<li><img src="{{iconLink}}"/> <strong>{{title}}</strong> <a href="{{selfLink}}">Link to file</a>, <a href="{{webContentLink}}">Link to web content</a>, <a href="{{thumbnailLink}}">Thumbnail</a></li>
 				</template>
 			</ul>
 		</div>

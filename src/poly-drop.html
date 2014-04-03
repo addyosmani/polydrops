@@ -25,7 +25,7 @@
 		  visibility: hidden;
 		}
 		.custom-file-input::before {
-			content: 'or select some files';
+			content: 'or click to select files';
 			display: inline-block;
 			background: rgb(238, 238, 238) !important;
 			padding: 5px 12px;
@@ -50,13 +50,13 @@
 		<span id="signin"></span>
 
 		<div id="uploadView">
-			<div id="dropzone" on-dragover="{{handleDragOver}}" on-drop="{{handleFileSelect}}">Drag and drop files here <input type="file" id="files" class="custom-file-input" name="files[]" multiple on-change="{{handleFilePick}}"/> </div>
+			<div id="dropzone" on-dragover="{{handleDragOver}}" on-drop="{{handleFileSelect}}">Drag and drop files here <input tabindex="0" type="file" id="files" class="custom-file-input" name="files[]" multiple on-change="{{handleFilePick}}"/> </div>
 			<!--
 			<input type="file" id="files" name="files[]" multiple on-change="{{handleFilePick}}"/>
 			-->
 
 			<!-- Files you have added -->
-			<h2>File upload queue</h2>
+			<h2>Queued for upload</h2>
 			<ul>
 				<template repeat="{{file in uploadList}}">
 		          <li><strong>{{file.name}}</strong> ({{file.size}}, {{file.type}})</li>
@@ -64,7 +64,7 @@
 			</ul>
 
 			<!-- Files uploaded -->
-			<h2>Files uploaded</h2>
+			<h2>Successfully uploaded</h2>
 			<ul>
 				<template repeat="{{uploadedList}}">
 					<li><img src="{{iconLink}}"/> <strong>{{title}}</strong> <a href="{{selfLink}}">Link to file</a>, <a href="{{webContentLink}}">Link to web content</a>, {{thumbnailLink}}</li>

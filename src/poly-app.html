@@ -1,0 +1,60 @@
+<link rel="import" href="../bower_components/polymer/polymer.html">
+<link rel="import" href="poly-drop.html">
+
+<polymer-element name="poly-app">
+	<template>
+		<style>
+			:host {
+				display: block;
+			}
+
+            * {
+            	font-family: 'Open Sans', 'Arial';
+            }
+
+            #site-banner {
+            	top: 0;
+            	right:0;
+				background-color: rgb(31, 32, 54);
+				display: flex;
+				align-items: flex-end;
+				position: fixed;
+				z-index: 1;
+				height: 100px;
+				width: 100%;
+				color: rgb(255, 255, 255);
+				padding-left: 64px;
+				transition: background-color 300ms ease-in;           	
+            }
+
+            .app-bar {
+				padding: 16px !important;
+				height: 80px;           	
+            }
+
+            .app-bar h1 {
+            	font-weight: 300;
+            }
+
+            poly-drop {
+            	margin-top: 120px;
+            	position: relative;
+            	display: block;
+            }
+		</style>
+
+		<div id="site-banner">
+		   <div class="app-bar">
+		      <h1>Polydrop</h1>
+		   </div>
+		</div>
+
+        <poly-drop></poly-drop>
+
+	</template>
+	<script>
+		Polymer('poly-app', {
+			
+		});
+	</script>
+</polymer-element>

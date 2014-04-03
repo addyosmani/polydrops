@@ -10,61 +10,85 @@
 			-moz-border-radius: 5px;
 			-webkit-border-radius: 5px;
 			border-radius: 5px;
-			padding: 25px;
+			padding: 70px 10px;
 			text-align: center;
 			font: 20pt bold 'Helvetica';
 			color: #bbb;
+			background: rgb(238, 238, 238) !important;
 		}
+
+		#files {
+			display: block;
+			margin: 0 auto;
+		}
+
+		.custom-file-input::-webkit-file-upload-button {
+		  visibility: hidden;
+		}
+		.custom-file-input::before {
+			content: 'or select some files';
+			display: inline-block;
+			background: rgb(238, 238, 238) !important;
+			padding: 5px 12px;
+			outline: none;
+			white-space: nowrap;
+			-webkit-user-select: none;
+			cursor: pointer;
+			font-size: 16pt;
+			width: 250px;
+			margin: 0 auto;
+		}
+		.custom-file-input:hover::before {
+		  border-color: black;
+		}
+		.custom-file-input:active::before {
+		  background: -webkit-linear-gradient(top, #e3e3e3, #f9f9f9);
+		}
+
+		#uploadView { display: none; }
 	</style>
 	<template>
 		<span id="signin"></span>
-		<div id="dropzone" style="display:none;">Drop files here</div>
-		<input type="file" id="files" name="files[]" multiple />
-		<div id="results"></div>
-		
-		<ul>
-			<template repeat="{{file in uploadList}}">
-	          <li><strong>{{file.name}}</strong> ({{file.size}}, {{file.type}})</li>
-			</template>
-		</ul>
+
+		<div id="uploadView">
+			<div id="dropzone" on-dragover="{{handleDragOver}}" on-drop="{{handleFileSelect}}">Drag and drop files here <input type="file" id="files" class="custom-file-input" name="files[]" multiple on-change="{{handleFilePick}}"/> </div>
+			<!--
+			<input type="file" id="files" name="files[]" multiple on-change="{{handleFilePick}}"/>
+			-->
+
+			<!-- Files you have added -->
+			<h2>File upload queue</h2>
+			<ul>
+				<template repeat="{{file in uploadList}}">
+		          <li><strong>{{file.name}}</strong> ({{file.size}}, {{file.type}})</li>
+				</template>
+			</ul>
+
+			<!-- Files uploaded -->
+			<h2>Files uploaded</h2>
+			<ul>
+				<template repeat="{{uploadedList}}">
+					<li><img src="{{iconLink}}"/> <strong>{{title}}</strong> <a href="{{selfLink}}">Link to file</a>, <a href="{{webContentLink}}">Link to web content</a>, {{thumbnailLink}}</li>
+				</template>
+			</ul>
+		</div>
 
 	</template>
 	<script>
 	    var clientId = "400542164111-q94vcbin3jp3fb2a0su1nm6gt4qpf86t.apps.googleusercontent.com";
-		
 		var accessToken = null;
 
 		function signinCallback(result) {
 		    if (result.access_token) {
 		        accessToken = result.access_token;
-		        document.getElementById("signin").style.display = "none";
-		        document.getElementById("dropzone").style.display = null;
+		        document.getElementById("___signin_0").style.display = "none";
+		        document.getElementById("uploadView").style.display = "block";
 		    }
 		}
 
-		function uploadFiles (files) {
-	    	console.log('Files list', files);
-	        //this.uploadList = [];
-	        for (var i = 0, f; f = files[i]; i++) {
-	        	//this.uploadList.push(f);
-	            var uploader = new MediaUploader({
-	                file: f,
-	                token: accessToken,
-	                onComplete: function (data) {
-	                	console.log(data);
-	                    var element = document.createElement("pre");
-	                    element.appendChild(document.createTextNode(data));
-	                    document.getElementById("results").appendChild(element);
-
-	                    console.log(data);
-	                }
-	            });
-	            uploader.upload();
-	        }   
-	    }
-
 		Polymer('poly-drop', {
 			uploadList: [],
+			uploadedList: [],
 		    created: function () {
 		        var script = document.createElement("script");
 		        var body = document.body;
@@ -84,11 +108,24 @@
 		        body.appendChild(script);
 
 		    },
-		    ready: function () {
-		        this.results = this.$.results;
-		        this.$.dropzone.addEventListener('dragover', this.handleDragOver, false);
-		        this.$.dropzone.addEventListener('drop', this.handleFileSelect, false);
-		        this.$.files.addEventListener('change', this.handleFilePick, false);
+		    uploadFiles: function(files){
+		    	var uploadedList = this.uploadedList;
+		    	var queueList = this.uploadList;
+
+		    	console.log('Files list', files);
+
+		        for (var i = 0, f; f = files[i]; i++) {
+		        	queueList.push(f);
+		            var uploader = new MediaUploader({
+		                file: f,
+		                token: accessToken,
+		                onComplete: function (data) {
+		                	console.log(data);
+		                	uploadedList.push(JSON.parse(data)); 
+		                }
+		            });
+		            uploader.upload();
+		        } 		    	
 		    },
 		    handleDragOver: function (evt) {
 		        evt.stopPropagation();
@@ -98,12 +135,12 @@
 		    handleFilePick: function(evt) {
 		        evt.stopPropagation();
 		        evt.preventDefault();
-		        uploadFiles(evt.target.files);		    	
+		        this.uploadFiles(evt.target.files);		    	
 		    },
 		    handleFileSelect: function (evt) {
 		        evt.stopPropagation();
 		        evt.preventDefault();
-		        uploadFiles(evt.dataTransfer.files);
+		        this.uploadFiles(evt.dataTransfer.files);
 		    }
 		});
 	</script>

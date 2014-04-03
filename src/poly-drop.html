@@ -19,7 +19,15 @@
 	<template>
 		<span id="signin"></span>
 		<div id="dropzone" style="display:none;">Drop files here</div>
+		<input type="file" id="files" name="files[]" multiple />
 		<div id="results"></div>
+		
+		<ul>
+			<template repeat="{{file in uploadList}}">
+	          <li><strong>{{file.name}}</strong> ({{file.size}}, {{file.type}})</li>
+			</template>
+		</ul>
+
 	</template>
 	<script>
 	    var clientId = "400542164111-q94vcbin3jp3fb2a0su1nm6gt4qpf86t.apps.googleusercontent.com";
@@ -34,13 +42,29 @@
 		    }
 		}
 
+		function uploadFiles (files) {
+	    	console.log('Files list', files);
+	        //this.uploadList = [];
+	        for (var i = 0, f; f = files[i]; i++) {
+	        	//this.uploadList.push(f);
+	            var uploader = new MediaUploader({
+	                file: f,
+	                token: accessToken,
+	                onComplete: function (data) {
+	                	console.log(data);
+	                    var element = document.createElement("pre");
+	                    element.appendChild(document.createTextNode(data));
+	                    document.getElementById("results").appendChild(element);
+
+	                    console.log(data);
+	                }
+	            });
+	            uploader.upload();
+	        }   
+	    }
+
 		Polymer('poly-drop', {
-		/*
-		    signinCallback: function (result) {
-		        this.accessToken = result.access_token;
-		        this.$.signin.style.display = "none";
-		        this.$.dropzone.style.display = null;
-		    },*/
+			uploadList: [],
 		    created: function () {
 		        var script = document.createElement("script");
 		        var body = document.body;
@@ -62,38 +86,24 @@
 		    },
 		    ready: function () {
 		        this.results = this.$.results;
-		        this.dropzone = this.$.dropzone;
-		        this.dropzone.addEventListener('dragover', this.handleDragOver, false);
-		        this.dropzone.addEventListener('drop', this.handleFileSelect, false);
+		        this.$.dropzone.addEventListener('dragover', this.handleDragOver, false);
+		        this.$.dropzone.addEventListener('drop', this.handleFileSelect, false);
+		        this.$.files.addEventListener('change', this.handleFilePick, false);
 		    },
 		    handleDragOver: function (evt) {
 		        evt.stopPropagation();
 		        evt.preventDefault();
 		        evt.dataTransfer.dropEffect = 'copy';
 		    },
+		    handleFilePick: function(evt) {
+		        evt.stopPropagation();
+		        evt.preventDefault();
+		        uploadFiles(evt.target.files);		    	
+		    },
 		    handleFileSelect: function (evt) {
 		        evt.stopPropagation();
 		        evt.preventDefault();
-
-		        var files = evt.dataTransfer.files; // FileList object.
-		        console.log(files); // name, size, type
-
-		        var output = [];
-		        for (var i = 0, f; f = files[i]; i++) {
-		            var uploader = new MediaUploader({
-		                file: f,
-		                token: accessToken,
-		                onComplete: function (data) {
-
-		                    var element = document.createElement("pre");
-		                    element.appendChild(document.createTextNode(data));
-		                    this.results.appendChild(element);
-
-		                    console.log(data);
-		                }
-		            });
-		            uploader.upload();
-		        }           
+		        uploadFiles(evt.dataTransfer.files);
 		    }
 		});
 	</script>

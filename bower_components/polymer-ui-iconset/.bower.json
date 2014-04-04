@@ -1,0 +1,19 @@
+{
+  "name": "polymer-ui-iconset",
+  "private": true,
+  "dependencies": {
+    "polymer": "Polymer/polymer#0.2.2",
+    "polymer-meta": "Polymer/polymer-meta#0.2.2"
+  },
+  "version": "0.2.2",
+  "homepage": "https://github.com/Polymer/polymer-ui-iconset",
+  "_release": "0.2.2",
+  "_resolution": {
+    "type": "version",
+    "tag": "0.2.2",
+    "commit": "8806819b9080fba81ca2b5be176f685024f99883"
+  },
+  "_source": "git://github.com/Polymer/polymer-ui-iconset.git",
+  "_target": "0.2.2",
+  "_originalSource": "Polymer/polymer-ui-iconset"
+}

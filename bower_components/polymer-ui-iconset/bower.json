@@ -1,0 +1,9 @@
+{
+  "name": "polymer-ui-iconset",
+  "private": true,
+  "dependencies": {
+    "polymer": "Polymer/polymer#0.2.2",
+    "polymer-meta": "Polymer/polymer-meta#0.2.2"
+  },
+  "version": "0.2.2"
+}

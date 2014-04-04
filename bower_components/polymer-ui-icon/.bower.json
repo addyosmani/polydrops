@@ -1,0 +1,21 @@
+{
+  "name": "polymer-ui-icon",
+  "private": true,
+  "dependencies": {
+    "polymer": "Polymer/polymer#0.2.2",
+    "polymer-ui-theme-aware": "Polymer/polymer-ui-theme-aware#0.2.2",
+    "polymer-ui-iconset": "Polymer/polymer-ui-iconset#0.2.2",
+    "polymer-ui-action-icons": "Polymer/polymer-ui-action-icons#0.2.2"
+  },
+  "version": "0.2.2",
+  "homepage": "https://github.com/Polymer/polymer-ui-icon",
+  "_release": "0.2.2",
+  "_resolution": {
+    "type": "version",
+    "tag": "0.2.2",
+    "commit": "0a9fe0102c81183a821b96984c889624dbbbe7fe"
+  },
+  "_source": "git://github.com/Polymer/polymer-ui-icon.git",
+  "_target": "0.2.2",
+  "_originalSource": "Polymer/polymer-ui-icon"
+}

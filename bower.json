@@ -21,7 +21,9 @@
     "polymer": "Polymer/polymer#~0.2.0",
     "sortable-table": "~0.4.2",
     "polymer-ui-toggle-button": "PolymerLabs/polymer-ui-toggle-button#~0.2.2",
-    "polymer-flex-layout": "Polymer/polymer-flex-layout#~0.2.2"
+    "polymer-flex-layout": "Polymer/polymer-flex-layout#~0.2.2",
+    "polymer-ui-toolbar": "PolymerLabs/polymer-ui-toolbar#~0.2.2",
+    "polymer-ui-splitter": "PolymerLabs/polymer-ui-splitter#~0.2.2"
   },
   "resolutions": {
     "platform": "0.2.2"

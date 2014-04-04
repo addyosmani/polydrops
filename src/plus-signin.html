@@ -1,0 +1,83 @@
+<link rel="import" href="../bower_components/polymer/polymer.html">
+
+<!--
+/*
+* plus-signin-button
+* A Polymer element for firing events when a user is logged
+ */
+-->
+<polymer-element name="plus-signin-button" attributes="loggedin">
+	<template>
+		<style>
+			:host {
+				display: block;
+			}
+		</style>
+	</template>
+	<script>
+		Polymer('plus-signin-button', {
+			loggedinChanged: function (){
+				console.log('Google+ Signed In Successfully.');
+				this.fire('plus-signed-in');
+			}
+		});
+	</script>
+</polymer-element>
+
+<!--
+/*
+* plus-signin: A Polymer element for authorizing with Google+
+* Copyright Addy Osmani 2014.
+* 
+* Pass it a valid clientId (retrieved from your Google Developer Console)
+* in order for the sign-in callback to correctly function.
+ */
+-->
+<polymer-element name="plus-signin" attributes="clientId">
+	<template>
+		<style>
+			:host {
+				display: block;
+			}
+		</style>
+		<plus-signin-button id="signin" loggedin="false"></plus-signin-button>
+	</template>
+	<script>
+	    var accessToken = null;
+		function signinCallback(result) {
+		    if (result.access_token) {
+				accessToken = result.access_token;
+
+		    	var signInButton = document.getElementById("___signin_0");
+
+		    	// Trigger the plus-signed-in event
+		    	signInButton.setAttribute("loggedin", "true");
+
+		    	// Hide the sign-in button once authorized
+		    	signInButton.style.display = "none";
+		    }
+		}	
+
+		Polymer('plus-signin', {
+			clientId: '', 
+		    ready: function () {
+		        var script = document.createElement("script");
+		        var body = document.body;
+		        var div = document.createElement("div");
+
+		        script.setAttribute("type", "text/javascript");
+		        script.setAttribute("src", "https://apis.google.com/js/client:plusone.js");
+		        script.setAttribute("async", true);
+		        script.innerHTML = "{lang: 'en-us'}";
+
+		        div.setAttribute("class", "g-signin");
+		        div.setAttribute("data-callback", "signinCallback");
+		        div.setAttribute("data-clientid", this.clientId);
+		        div.setAttribute("data-cookiepolicy", "single_host_origin");
+		        div.setAttribute("data-scope", "https://www.googleapis.com/auth/drive.file");
+		        body.appendChild(div);
+		        body.appendChild(script);
+		    }	
+		});
+	</script>
+</polymer-element>

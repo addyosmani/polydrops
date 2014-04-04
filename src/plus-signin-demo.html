@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>Polydrops</title>
+
+    <!-- Importing Web Component's Polyfill -->
+    <script src="../bower_components/platform/platform.js"></script>
+
+    <!-- Importing Custom Elements -->
+    <link rel="import" href="plus-signin.html">
+    <style>
+    body {
+    	margin: 0px;
+    }
+    </style>
+</head>
+<body>
+    <plus-signin clientId="400542164111-q94vcbin3jp3fb2a0su1nm6gt4qpf86t.apps.googleusercontent.com"></plus-signin>
+
+    <script>
+       document.addEventListener('plus', function(e) {
+          alert('You should be signed in now');
+       });
+    </script>
+</body>
+</html>

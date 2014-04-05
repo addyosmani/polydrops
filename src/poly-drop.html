@@ -116,6 +116,11 @@
             width: 100%;
             overflow: visible;
         }
+
+        @media (max-width: 500px) {
+            .box1, .box2 { width: 100% }
+            #file-splitter polymer-ui-splitter { display:none; }
+        }
     </style>
     <template>
 
@@ -161,7 +166,7 @@
 
                 <polymer-ui-splitter direction="left"></polymer-ui-splitter>
 
-                <div flex class="box2">
+                <div class="box2">
                     <polymer-ui-toolbar theme="polymer-ui-dark-theme">
                         <div flex>Uploaded</div>
                     </polymer-ui-toolbar>
@@ -186,6 +191,9 @@
                 document.addEventListener('plus-signed-in', function () {
                     document.getElementById("upload-view").style.display = "block";
                 });
+                document.addEventListener('clear-upload-list', function () {
+                    this.clearUploadList();
+                }.bind(this));
             },
             selectFiles: function (files) {
                 this.queue = files;
@@ -235,6 +243,10 @@
                 evt.stopPropagation();
                 evt.preventDefault();
                 this.selectFiles(evt.dataTransfer.files);
+            },
+            clearUploadList: function () {
+                this.uploadedList = [];
+                this.uploadList = [];
             }
         });
     </script>

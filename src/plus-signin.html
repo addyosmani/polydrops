@@ -43,12 +43,12 @@
 		<plus-signin-button id="signin" loggedin="false"></plus-signin-button>
 	</template>
 	<script>
-	    var accessToken = null;
+		var accessToken = null;
 		function signinCallback(result) {
-		    if (result.access_token) {
+			if (result.access_token) {
 				accessToken = result.access_token;
 
-		    	var signInButton = document.getElementById("___signin_0");
+				var signInButton = document.getElementById("___signin_0");
 
 		    	// Trigger the plus-signed-in event
 		    	signInButton.setAttribute("loggedin", "true");
@@ -60,24 +60,24 @@
 
 		Polymer('plus-signin', {
 			clientId: '', 
-		    ready: function () {
-		        var script = document.createElement("script");
-		        var body = document.body;
-		        var div = document.createElement("div");
+			ready: function () {
+				var script = document.createElement("script");
+				var body = document.body;
+				var div = document.createElement("div");
 
-		        script.setAttribute("type", "text/javascript");
-		        script.setAttribute("src", "https://apis.google.com/js/client:plusone.js");
-		        script.setAttribute("async", true);
-		        script.innerHTML = "{lang: 'en-us'}";
+				script.setAttribute("type", "text/javascript");
+				script.setAttribute("src", "https://apis.google.com/js/client:plusone.js");
+				script.setAttribute("async", true);
+				script.innerHTML = "{lang: 'en-us'}";
 
-		        div.setAttribute("class", "g-signin");
-		        div.setAttribute("data-callback", "signinCallback");
-		        div.setAttribute("data-clientid", this.clientId);
-		        div.setAttribute("data-cookiepolicy", "single_host_origin");
-		        div.setAttribute("data-scope", "https://www.googleapis.com/auth/drive.file");
-		        body.appendChild(div);
-		        body.appendChild(script);
-		    }	
+				div.setAttribute("class", "g-signin");
+				div.setAttribute("data-callback", "signinCallback");
+				div.setAttribute("data-clientid", this.clientId);
+				div.setAttribute("data-cookiepolicy", "single_host_origin");
+				div.setAttribute("data-scope", "https://www.googleapis.com/auth/drive.file");
+				body.appendChild(div);
+				body.appendChild(script);
+			}	
 		});
 	</script>
 </polymer-element>

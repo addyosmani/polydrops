@@ -5,6 +5,8 @@
 <link rel="import" href="../bower_components/polymer-flex-layout/polymer-flex-layout.html">
 <link rel="import" href="../bower_components/polymer-ui-splitter/polymer-ui-splitter.html">
 
+<link rel="import" href="plus-signin.html">
+
 <polymer-element name="poly-drop">
 	<script src="upload.js"></script>
 	<style>
@@ -96,7 +98,8 @@
 		}
 	</style>
 	<template>
-		<span id="signin"></span>
+		
+		<plus-signin clientId="400542164111-q94vcbin3jp3fb2a0su1nm6gt4qpf86t.apps.googleusercontent.com"></plus-signin>
 
 		<div id="upload-view">
 
@@ -138,40 +141,16 @@
 
 	</template>
 	<script>
-	    var clientId = "400542164111-q94vcbin3jp3fb2a0su1nm6gt4qpf86t.apps.googleusercontent.com";
-		var accessToken = null;
-
-		function signinCallback( result ) {
-		    if (result.access_token) {
-		        accessToken = result.access_token;
-		        document.getElementById("___signin_0").style.display = "none";
-		        document.getElementById("upload-view").style.display = "block";
-		    }
-		}
-
 		Polymer('poly-drop', {
 			uploadList: [],
 			uploadedList: [],
 			autoUpload: true,
-		    created: function () {
-		        var script = document.createElement("script");
-		        var body = document.body;
-		        var div = document.createElement("div");
-
-		        script.setAttribute("type", "text/javascript");
-		        script.setAttribute("src", "https://apis.google.com/js/client:plusone.js");
-		        script.setAttribute("async", true);
-		        script.innerHTML = "{lang: 'en-us'}";
-
-		        div.setAttribute("class", "g-signin");
-		        div.setAttribute("data-callback", "signinCallback");
-		        div.setAttribute("data-clientid", clientId);
-		        div.setAttribute("data-cookiepolicy", "single_host_origin");
-		        div.setAttribute("data-scope", "https://www.googleapis.com/auth/drive.file");
-		        body.appendChild(div);
-		        body.appendChild(script);
-
-		    },
+			ready: function () {
+				document.addEventListener('plus-signed-in', function(){
+					console.log('so plus did its thing');
+					document.getElementById("upload-view").style.display = "block";
+				});
+			},
 		    selectFiles: function( files ){
 		    	this.queue = files;
 		    	this.$.status.innerHTML = 'Files selected';

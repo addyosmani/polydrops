@@ -61,7 +61,7 @@ license that can be found in the LICENSE file.
          */
         type: 'default',
         ready: function() {
-          this.idChanged();
+          this.register(this.id);
         },
         get metaArray() {
           var t = this.type;
@@ -77,10 +77,10 @@ license that can be found in the LICENSE file.
           }
           return metaData[t];
         },
-        idChanged: function(old) {
-          if (this.id && this.id !== SKIP_ID) {
+        register: function(id, old) {
+          if (id && id !== SKIP_ID) {
             this.unregister(this, old);
-            this.metaData[this.id] = this;
+            this.metaData[id] = this;
             this.metaArray.push(this);
           }
         },

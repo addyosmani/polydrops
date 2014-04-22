@@ -3,8 +3,8 @@
 <link rel="import" href="../bower_components/polymer-ui-toggle-button/polymer-ui-toggle-button.html">
 <link rel="import" href="../bower_components/polymer-ui-toolbar/polymer-ui-toolbar.html">
 <link rel="import" href="../bower_components/polymer-flex-layout/polymer-flex-layout.html">
+<link rel="import" href="../bower_components/polymer-flex-layout/polymer-flex-panel.html">
 <link rel="import" href="../bower_components/polymer-ui-splitter/polymer-ui-splitter.html">
-<link rel="import" href="plus-signin.html">
 
 <!--
 * Copyright (c) 2014 Google Inc. All rights reserved.
@@ -19,7 +19,8 @@
 
 <polymer-element name="poly-drop">
     <script src="upload.js"></script>
-    <style>
+    <template>
+    <style shim-shadowdom>
         #dropzone {
             -moz-border-radius: 5px;
             -webkit-border-radius: 5px;
@@ -89,27 +90,15 @@
             font-size: 1em;
         }
 
+        polymer-ui-splitter {
+            height: 500px;
+        }
+
         .container {
             width: 400px;
             height: 500px;
         }
 
-        .box1 {
-            width: 49%;
-            height: 100%;
-            float: left;
-        }
-
-        .box2 {
-            width: 49%;
-            height: 100%;
-            float: left;
-        }
-
-        polymer-ui-splitter {
-            height: 100%;
-            float: left;
-        }
 
         #file-splitter {
             width: 100%;
@@ -121,18 +110,11 @@
             #file-splitter polymer-ui-splitter { display:none; }
         }
     </style>
-    <template>
-
-        <plus-signin clientId="400542164111-q94vcbin3jp3fb2a0su1nm6gt4qpf86t.apps.googleusercontent.com"></plus-signin>
-
-        <div id="upload-view">
+        <div id="uploadview" style="display:none;">
 
             <div id="dropzone" on-tap="{{tapSelect}}" on-dragover="{{handleDragOver}}" on-drop="{{handleFileSelect}}">
-                Drag files to upload to Google Drive <img src="drive.png" width="32px"> <input tabindex="0" type="file"
-                                                                                               id="files"
-                                                                                               class="custom-file-input"
-                                                                                               name="files[]" multiple
-                                                                                               on-change="{{handleFilePick}}"/>
+                Drag files to upload to Google Drive <img src="drive.png" width="32px"> 
+                <input tabindex="0" type="file" id="files" class="custom-file-input" name="files[]" multiple on-change="{{handleFilePick}}"/>
             </div>
 
             <polymer-ui-toolbar id="dropzone-bar">
@@ -151,8 +133,9 @@
                 </div>
             </polymer-ui-toolbar>
 
-            <div class="container flexbox" id="file-splitter">
-                <div class="box1">
+        <div id="file-splitter" flex>
+            <polymer-flex-layout></polymer-flex-layout>
+                  <div class="box1" style="width:50%">
                     <polymer-ui-toolbar theme="polymer-ui-dark-theme">
                         <div flex>Queue</div>
                     </polymer-ui-toolbar>
@@ -162,10 +145,8 @@
                         </template>
                     </ul>
                 </div>
-
-                <polymer-ui-splitter direction="left"></polymer-ui-splitter>
-
-                <div class="box2">
+                  <polymer-ui-splitter direction="left"></polymer-ui-splitter>
+                <div class="box2" style="width:50%">
                     <polymer-ui-toolbar theme="polymer-ui-dark-theme">
                         <div flex>Uploaded</div>
                     </polymer-ui-toolbar>
@@ -178,6 +159,7 @@
                     </ul>
                 </div>
             </div>
+        </div>
 
 
     </template>
@@ -187,9 +169,16 @@
             uploadedList: [],
             autoUpload: true,
             ready: function () {
-                document.addEventListener('plus-signed-in', function () {
-                    document.getElementById("upload-view").style.display = "block";
-                });
+                document.addEventListener('google-signin-success', function (e) {
+                    this.accessToken = e.detail.result.access_token;
+                    this.$.uploadview.style.display = "block";
+                }.bind(this));
+                document.addEventListener('google-signed-out', function (e) {
+                    this.$.uploadview.style.display = "hidden";
+                }.bind(this));
+                document.addEventListener('google-signed-attempted', function (e) {
+                    this.$.uploadview.style.display = "hidden";
+                }.bind(this));
                 document.addEventListener('clear-upload-list', function () {
                     this.clearUploadList();
                 }.bind(this));
@@ -216,10 +205,11 @@
                     this.$.status.innerHTML = 'Uploading...';
                     var uploader = new MediaUploader({
                         file: f,
-                        token: accessToken,
+                        token: this.accessToken,
                         onComplete: function (data) {
                             uploadedList.push(JSON.parse(data));
                             this.$.status.innerHTML = 'Upload successful';
+                            this.uploadList = [];
                         }.bind(this)
                     });
                     uploader.upload();

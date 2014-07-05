@@ -1,0 +1,39 @@
+{
+  "name": "PolymerDriveCodelab",
+  "description": "A Google Drive client written with Polymer",
+  "homepage": "http://polydrops.com",
+  "keywords": [
+    "polydrops",
+    "drive",
+    "upload",
+    "polymer"
+  ],
+  "author": "",
+  "private": true,
+  "dependencies": {
+    "polymer": "Polymer/polymer#0.3.3",
+    "polymer-ui-toggle-button": "PolymerLabs/polymer-ui-toggle-button#0.2.4",
+    "core-splitter": "Polymer/core-splitter#0.3.3",
+    "core-toolbar": "Polymer/core-toolbar#0.3.3",
+    "core-upload-sample": "googledrive/cors-upload-sample#master",
+    "google-signin": "GoogleWebComponents/google-signin#master",
+    "core-scaffold": "Polymer/core-scaffold#0.3.3"
+  },
+  "resolutions": {
+    "platform": ">=0.3.0 <1.0.0",
+    "core-component-page": ">=0.3.0 <1.0.0",
+    "polymer": "0.3.3",
+    "core-icon-button": ">=0.3.0 <1.0.0",
+    "core-icons": ">=0.3.0 <1.0.0",
+    "core-icon": ">=0.3.0 <1.0.0",
+    "core-iconset": ">=0.3.0 <1.0.0",
+    "core-meta": ">=0.3.0 <1.0.0",
+    "core-iconset-svg": ">=0.3.0 <1.0.0",
+    "core-drawer-panel": ">=0.3.0 <1.0.0",
+    "core-selector": ">=0.3.0 <1.0.0",
+    "core-selection": ">=0.3.0 <1.0.0",
+    "core-media-query": ">=0.3.0 <1.0.0",
+    "core-header-panel": ">=0.3.0 <1.0.0",
+    "core-toolbar": "0.3.3"
+  }
+}
